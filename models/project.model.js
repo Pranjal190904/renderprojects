@@ -18,6 +18,10 @@ const studentSchema=new mongoose.Schema({
     },
     hosted:{
         type:String
+    },
+    projectSubmitted:{
+        type:Boolean,
+        default:false
     }
 });
 

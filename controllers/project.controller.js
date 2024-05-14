@@ -1,10 +1,16 @@
 const Student=require('../models/project.model');
 const uploadOnCloudinary=require('../utils/cloudinary');
+const {recapchaSecret}=require('../config/env.config')
 
 const projectUpload=async(req,res)=>{
     try{
-        const {name,email,github,hosted}=req.body;
+        const {name,email,github,hosted,token}=req.body;
         const student=await Student.findOne({email:email});
+        const response=await axios.post( `https://www.google.com/recaptcha/api/siteverify?secret=${recapchaSecret}&response=${token}`);
+        if(!response.success || response.score<0.5)
+        {
+            return res.status(400).json({message:"recapcha not verified"});
+        }
         if(!student)
         {
             return res.status(404).json({message:"Email not Registered"});

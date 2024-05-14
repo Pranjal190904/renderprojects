@@ -6,7 +6,6 @@ const axios=require('axios');
 const projectUpload=async(req,res)=>{
     try{
         const {name,email,github,hosted,token}=req.body;
-        console.log(req.file);
         const student=await Student.findOne({email:email});
         const response=await axios.post( `https://www.google.com/recaptcha/api/siteverify?secret=${recapchaSecret}&response=${token}`);
         if(!response.data.success || response.data.score<0.5)
@@ -28,7 +27,6 @@ const projectUpload=async(req,res)=>{
         return res.status(200).json({message:"Project uploaded successfully"});
     }
     catch(err){
-        console.log(err);
         return res.status(500).json({error:"Internal server error"});
     }
 }
